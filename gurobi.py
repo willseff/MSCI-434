@@ -20,7 +20,7 @@ n={}
 d={}
 
 for j in range(num_locations):
-  x[j] = m.addVar(vtype=GRB.BINARY)
+  x[j] = m.addVar(vtype=GRB.BINARY,name="facility location %d" % (j+1))
   n[j] = monthly_num_trips[j]
 
 for i in range(num_locations):
@@ -35,3 +35,5 @@ m.setObjective(quicksum(x[i]*d[i,j]*n[j] for i in range(num_locations) for j in 
 
 m.optimize()
 
+for v in m.getVars():
+	print('%s %g' % (v.varName, v.x))
