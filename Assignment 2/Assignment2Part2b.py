@@ -2,7 +2,7 @@ from gurobipy import *
 import pandas as pd
 import math
 
-def distance(a,b):
+def euclidean_distance(a,b):
   dx = a[0] - b[0]
   dy = a[1] - b[1]
   return math.sqrt(dx*dx + dy*dy)
@@ -28,7 +28,7 @@ for j in range(num_locations):
 
 for i in range(num_locations):
   for j in range(num_locations):
-    d[(i,j)] = distance(locations[i], locations[j])
+    d[(i,j)] = euclidean_distance(locations[i], locations[j])
 
 m.update()
 
