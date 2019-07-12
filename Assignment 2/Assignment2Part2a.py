@@ -16,12 +16,9 @@ for x in range(20):
 	for y in range(20):
 		dc_locations.append([x+1,y+1])
 
-print(dc_locations)
-
-
-
 num_locations = len(locations)
 num_dc_locations = len(dc_locations)
+print(num_dc_locations)
 
 m = Model()
 
@@ -30,20 +27,23 @@ n={}
 d={}
 
 for j in range(num_locations):
-  x[j] = m.addVar(vtype=GRB.BINARY,name="facility location %d" % (j+1))
-  n[j] = monthly_num_trips[j]
+	n[j] = monthly_num_trips[j]
 
-for i in range(num_locations):
+for i in range(num_dc_locations):
+	x[i] = m.addVar(vtype=GRB.BINARY,name="facility location %d,%d" % (dc_locations[i][0],dc_locations[i][1]))
+
+for i in range(num_dc_locations):
   for j in range(num_locations):
-    d[(i,j)] = euclidean_distance(locations[i], locations[j])
+    d[(i,j)] = euclidean_distance(dc_locations[i], locations[j])
 
 m.update()
 
-m.addConstr(quicksum(x[i]for i in range(num_locations)) == 1)
+m.addConstr(quicksum(x[i]for i in range(num_dc_locations)) == 1)
 
-m.setObjective(quicksum(x[i]*d[i,j]*n[j] for i in range(num_locations) for j in range(num_locations)))
+m.setObjective(quicksum(x[i]*d[i,j]*n[j] for i in range(num_dc_locations) for j in range(num_locations)),GRB.MINIMIZE)
 
 m.optimize()
 
 for v in m.getVars():
-	print('%s %g' % (v.varName, v.x))
+	if v.x == 1:
+		print('%s' % (v.varName))
