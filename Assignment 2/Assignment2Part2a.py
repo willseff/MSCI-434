@@ -10,8 +10,18 @@ def euclidean_distance(a,b):
 
 locations = [[15,13],[8,2],[12,6],[9,20], [12,2],[5,19], [6,14], [20,16], [8,16], [18,11]]
 monthly_num_trips = [80,45,75,30,15,75,70,85,10,85]
+dc_locations = []
+
+for x in range(20):
+	for y in range(20):
+		dc_locations.append([x+1,y+1])
+
+print(dc_locations)
+
+
 
 num_locations = len(locations)
+num_dc_locations = len(dc_locations)
 
 m = Model()
 
