@@ -37,11 +37,8 @@ for i in range(num_dc_locations):
     d[(i,j)] = euclidean_distance(dc_locations[i], locations[j])
 
 m.update()
-
 m.addConstr(quicksum(x[i]for i in range(num_dc_locations)) == 1)
-
 m.setObjective(quicksum(x[i]*d[i,j]*n[j] for i in range(num_dc_locations) for j in range(num_locations)),GRB.MINIMIZE)
-
 m.optimize()
 
 for v in m.getVars():
