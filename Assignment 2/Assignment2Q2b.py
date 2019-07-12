@@ -1,5 +1,4 @@
 from gurobipy import *
-import pandas as pd
 import math
 
 def euclidean_distance(a,b):
@@ -46,5 +45,3 @@ m.optimize()
 for v in m.getVars():
 	if v.x == 1:
 		print('%s' % (v.varName))
-
-print(d)

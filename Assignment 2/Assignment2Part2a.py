@@ -1,5 +1,4 @@
 from gurobipy import *
-import pandas as pd
 import math
 
 def euclidean_distance(a,b):
