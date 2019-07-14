@@ -21,7 +21,7 @@ for x in range(20):
 num_locations = len(locations)
 num_dc_locations = len(dc_locations)
 
-#create model
+#initialize model
 m = Model()
 
 #create empty dictionaries
