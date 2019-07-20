@@ -2,6 +2,7 @@ from Data_Generation import *
 from gurobipy import *
 
 # this model will model the problem as a facility location problem with normally generated demands and facility costs
+# no station capacities
 
 station_data = [[1018413,13140],[809150,10950],[704519,8760],[599887,4380]]
 district_demand = demand(2000,500,100).getMatrix()
@@ -19,7 +20,7 @@ for i in range (numR):
 
 for i in range(numR):
 	for j in range(numR):
-		x[(i,j)] = m.addVar(vtype=GRB.CONTINUOUS, name="units from %d to %d" % (i,j))
+		x[(i,j)] = m.addVar(vtype=GRB.INTEGER, name="units from %d to %d" % (i,j))
 
 m.update()
 
@@ -38,4 +39,5 @@ m.setObjective(quicksum(f[i] for i in range(numR)), GRB.MINIMIZE)
 m.optimize()
 
 for v in m.getVars():
-	print('%s %g' % (v.varName, v.x))
+	if (v.x != 0):	
+		print('%s %g' % (v.varName, v.x))
