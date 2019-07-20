@@ -21,6 +21,8 @@ class symm:
 
 
 class demand:
-	def __init__(self,mu,sigma,size)
+	def __init__(self,mu,sigma,size):
 		self.demand = np.random.normal(mu, sigma, size)
 
+	def getMatrix(self):
+		return self.demand
