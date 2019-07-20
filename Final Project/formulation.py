@@ -34,5 +34,5 @@ m.setObjective(quicksum(f[i] for i in range(numR)), GRB.MINIMIZE)
 m.optimize()
 
 for v in m.getVars():
-
-	print('%s %g' % (v.varName, v.x))
+	if('fire station' in v.varName and v.x == 1):
+		print('%s %g' % (v.varName, v.x))
