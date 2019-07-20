@@ -1,12 +1,9 @@
 from Data_Generation import *
 from gurobipy import *
 
-#creates a model where every region is covered with the minimum number of fire stations
-#modeled as a set covering problem
+#model maximizes the number of districts covered with a constrained number of fire stations
 
 data=symm(100,70)
-demand_data = demand(3000,1000,70).getMatrix()
-print(demand_data)
 sites_covered = data.getMatrix()
 
 numR = len(sites_covered)
@@ -28,13 +25,12 @@ m.update()
 for j in range(numR):
 	m.addConstr(quicksum(f[i] for i in range(numR) if sites_covered[i][j]==1) >= r[j])
 
-for j in range(numR):
-	m.addConstr(r[j] == 1)
+m.addConstr(quicksum(f[i] for i in range(numR))<=10)
 
-m.setObjective(quicksum(f[i] for i in range(numR)), GRB.MINIMIZE)
+m.setObjective(quicksum(r[i] for i in range(numR)), GRB.MAXIMIZE)
 
 m.optimize()
 
-#for v in m.getVars():
-	#if('fire station' in v.varName and v.x == 1):
-		#print('%s %g' % (v.varName, v.x))
+for v in m.getVars():
+	if('fire station' in v.varName and v.x == 1):
+		print('%s %g' % (v.varName, v.x))
