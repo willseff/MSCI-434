@@ -1,5 +1,6 @@
 import numpy as np
 
+#this class create a square symmetric matrix of ones and zeroes with the size and p(0) as parameters
 class symm:
 	def __init__(self, size,rate):
 		N = size
@@ -19,10 +20,12 @@ class symm:
 	def getMatrix(self):
 		return self.b_symm
 
-
+#creates random demand
 class demand:
 	def __init__(self,mu,sigma,size):
 		self.demand = np.random.normal(mu, sigma, size)
+		self.demand =np.ceil(self.demand)
 
 	def getMatrix(self):
 		return self.demand
+
