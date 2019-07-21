@@ -6,7 +6,6 @@ from gurobipy import *
 
 data=symm(100,70)
 sites_covered = data.getMatrix()
-print(sites_covered)
 
 numR = len(sites_covered)
 
