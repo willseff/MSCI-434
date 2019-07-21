@@ -29,3 +29,11 @@ class demand:
 	def getMatrix(self):
 		return self.demand
 
+#creates random weightings
+class weightings:
+	def __init__(self,mu,sigma,size):
+		self.weights = np.random.normal(mu,sigma,size)
+
+	def getMatrix(self):
+		return self.weights
+
