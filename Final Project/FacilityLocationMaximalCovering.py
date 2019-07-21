@@ -2,8 +2,9 @@ from Data_Generation import *
 from gurobipy import *
 
 #This will model as a capaciated facility location problem
-#The model aims to maximize the number of districts covered while staying below budget
+#The model aims to maximize the number of demands supplied while staying below budget
 
+budget = 50000000
 station_capacity = [13140,10950,8760,4380]
 station_cost =[1018413,809150,704519,599887]
 district_demand = demand(2000,500,100).getMatrix()
@@ -44,17 +45,19 @@ for i in range(numR):
 
 #demand is met
 for j in range(numR):
-	m.addConstr(quicksum(x[(i,j)] for i in range(numR)) == district_demand[j])
+	m.addConstr(quicksum(x[(i,j)] for i in range(numR)) <= district_demand[j])
 
 #only one fire station per region
 for i in range(numR):
 	m.addConstr(quicksum(f[(i,k)] for k in range(numK))<=1)
 
+#budget constraint
+m.addConstr(quicksum(f[(i,k)]*q[k] for i in range(numR) for k in range(numK)) <= budget)
+
 #objective function
-m.setObjective(quicksum(f[(i,k)]*q[k] for i in range(numR) for k in range(numK)), GRB.MINIMIZE)
+m.setObjective(quicksum(x[(i,j)] for i in range(numR) for k in range(numR)), GRB.MAXIMIZE)
 
 m.optimize()
 
 for v in m.getVars():
-	if (v.x != 0):	
-		print('%s %g' % (v.varName, v.x))
+	print('%s %g' % (v.varName, v.x))
