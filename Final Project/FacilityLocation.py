@@ -4,7 +4,7 @@ from gurobipy import *
 # this model will model the problem as a facility location problem with normally generated demands and facility costs
 # no station capacities
 # Objective is to minimize the number of fire stations needed while covering all the demands
-
+facility_capacity = 99999999
 district_demand = demand(2000,500,100).getMatrix()
 sites_covered = symm(100,70).getMatrix()
 
@@ -25,7 +25,7 @@ for i in range(numR):
 m.update()
 
 for i in range(numR):
-	m.addConstr(quicksum(x[(i,j)]for j in range(numR))<= 99999999*f[i])
+	m.addConstr(quicksum(x[(i,j)]for j in range(numR))<= facility_capacity*f[i])
 
 for i in range(numR):
 	for j in range(numR):
