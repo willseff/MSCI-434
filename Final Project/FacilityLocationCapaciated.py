@@ -2,6 +2,7 @@ from Data_Generation import *
 from gurobipy import *
 
 #This will model as a capaciated facility location problem
+#The model aims to minimize costs while covering all districts
 
 station_capacity = [13140,10950,8760,4380]
 station_cost =[1018413,809150,704519,599887]
@@ -14,11 +15,13 @@ numK = len(station_capacity)
 f = {} # Binary variables for each fire station
 x = {} # Units shipped from i to j
 c = {} # Fire station capacity
+q = {} # Fire station cost
 
 m=Model()
 
 for k in range(numK):
 	c[k] = station_capacity[k]
+	q[k] = station_cost[k]
 
 for i in range (numR):
 	for k in range (numK):
@@ -48,7 +51,7 @@ for i in range(numR):
 	m.addConstr(quicksum(f[(i,k)] for k in range(numK))<=1)
 
 #objective function
-m.setObjective(quicksum(f[(i,k)] for i in range(numR) for k in range(numK)), GRB.MINIMIZE)
+m.setObjective(quicksum(f[(i,k)]*q[k] for i in range(numR) for k in range(numK)), GRB.MINIMIZE)
 
 m.optimize()
 
