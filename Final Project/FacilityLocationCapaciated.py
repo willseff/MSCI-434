@@ -13,7 +13,7 @@ numK = len(station_capacity)
 
 f = {} # Binary variables for each fire station
 x = {} # Units shipped from i to j
-c = {} # Fire station information
+c = {} # Fire station capacity
 
 m=Model()
 
@@ -32,20 +32,22 @@ m.update()
 
 #station capacities
 for i in range(numR):
-	for k in range(numK):
-		m.addConstr(c[k]*f[(i,k)]>= quicksum(x[(i,j)]for j in range(numR)))
+	m.addConstr(quicksum(c[k]*f[(i,k)] for k in range(numK))>= quicksum(x[(i,j)]for j in range(numR)))
 
+# 5 minute range constraint
 for i in range(numR):
 	for j in range(numR):
 		m.addConstr(x[(i,j)] <= 9999999999*sites_covered[i][j])
 
+#demand is met
 for j in range(numR):
 	m.addConstr(quicksum(x[(i,j)] for i in range(numR)) == district_demand[j])
 
+#only one fire station per region
 for i in range(numR):
 	m.addConstr(quicksum(f[(i,k)] for k in range(numK))<=1)
 
-
+#objective function
 m.setObjective(quicksum(f[(i,k)] for i in range(numR) for k in range(numK)), GRB.MINIMIZE)
 
 m.optimize()
