@@ -4,11 +4,11 @@ from gurobipy import *
 #This will model as a capaciated facility location problem
 #The model aims to maximize the number of demands supplied while staying below budget
 
-budget = 5000000
-station_capacity = [13140,10950,8760,4380]
+budget = 10000000
+station_capacity = [1314000,1095000,876000,438000]
 station_cost =[1018413,809150,704519,599887]
-district_demand = demand(2000,500,100).getMatrix()
-sites_covered = symm(30,70).getMatrix()
+district_demand = demand(368000,184735,40).getMatrix()
+sites_covered = symm(30,80).getMatrix()
 
 numR = len(sites_covered)
 numK = len(station_capacity)
