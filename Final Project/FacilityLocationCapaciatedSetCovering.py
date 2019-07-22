@@ -4,10 +4,10 @@ from gurobipy import *
 #This will model as a capaciated facility location problem
 #The model aims to minimize costs while covering all districts
 
-station_capacity = [13140,10950,8760,4380]
+station_capacity = [1314000,1095000,876000,438000]
 station_cost =[1018413,809150,704519,599887]
-district_demand = demand(2000,500,100).getMatrix()
-sites_covered = symm(30,70).getMatrix()
+district_demand = demand(368000,184735,40).getMatrix()
+sites_covered = symm(30,80).getMatrix()
 
 numR = len(sites_covered)
 numK = len(station_capacity)
@@ -56,5 +56,6 @@ m.setObjective(quicksum(f[(i,k)]*q[k] for i in range(numR) for k in range(numK))
 m.optimize()
 
 for v in m.getVars():
-	if (v.x != 0):	
+	if (v.x>= 1): 
 		print('%s %g' % (v.varName, v.x))
+
