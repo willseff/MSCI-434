@@ -4,7 +4,7 @@ from gurobipy import *
 #creates a model where every region is covered with the minimum number of fire stations
 #modeled as a set covering problem
 
-data=symm(100,70)
+data=symm(100,80)
 sites_covered = data.getMatrix()
 
 numR = len(sites_covered)

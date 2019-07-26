@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 #this class create a square symmetric matrix of ones and zeroes with the size and p(0) as parameters
 class symm:
@@ -36,4 +37,6 @@ class weightings:
 
 	def getMatrix(self):
 		return self.weights
+
+
 

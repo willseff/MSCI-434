@@ -3,7 +3,7 @@ from gurobipy import *
 
 #model maximizes the number of districts covered with a constrained number of fire stations
 
-data=symm(100,70)
+data=symm(100,80)
 sites_covered = data.getMatrix()
 
 numR = len(sites_covered)
@@ -25,7 +25,7 @@ m.update()
 for j in range(numR):
 	m.addConstr(quicksum(f[i] for i in range(numR) if sites_covered[i][j]==1) >= r[j])
 
-m.addConstr(quicksum(f[i] for i in range(numR))<=10)
+m.addConstr(quicksum(f[i] for i in range(numR))<=5)
 
 m.setObjective(quicksum(r[i] for i in range(numR)), GRB.MAXIMIZE)
 
@@ -33,4 +33,4 @@ m.optimize()
 
 for v in m.getVars():
 	if('fire station' in v.varName and v.x == 1):
-		print('%s %g' % (v.varName, v.x))
+		print('%s' % (v.varName))
