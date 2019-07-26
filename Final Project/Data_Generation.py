@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 #this class create a square symmetric matrix of ones and zeroes with the size and p(0) as parameters
 class symm:
@@ -28,4 +29,14 @@ class demand:
 
 	def getMatrix(self):
 		return self.demand
+
+#creates random weightings
+class weightings:
+	def __init__(self,mu,sigma,size):
+		self.weights = np.random.normal(mu,sigma,size)
+
+	def getMatrix(self):
+		return self.weights
+
+
 
