@@ -1,20 +1,14 @@
 from Data_Generation import *
 from gurobipy import *
-from SetCovering import *
-from MaximalCovering import *
 
 class models:
 	def __init__ (self,sites_covered,station_capacity,station_cost,district_demand,budget):
 
 		self.sites_covered = sites_covered
-		self.set_covering_model 
-		self.maximal_covering_model
-		self.facility_location_set_covering_model
-		self.facility_location_maximal_covering_model
 
 	def set_covering(self):
 
-		numR = len(sites_covered)
+		numR = len(self.sites_covered)
 		m = Model()
 		f = {} # Binary variables for each fire station
 		r = {} # Binary variable for each region
@@ -28,7 +22,7 @@ class models:
 		m.update()
 
 		for j in range(numR):
-			m.addConstr(quicksum(f[i] for i in range(numR) if sites_covered[i][j]==1) >= r[j])
+			m.addConstr(quicksum(f[i] for i in range(numR) if self.sites_covered[i][j]==1) >= r[j])
 
 		for j in range(numR):
 			m.addConstr(r[j] == 1)
@@ -39,9 +33,9 @@ class models:
 
 		self.set_covering_model = m
 
-	def maximal_covering_model(self):
+	def maximal_covering(self):
 
-		numR = len(sites_covered)
+		numR = len(self.sites_covered)
 
 		m = Model()
 
@@ -57,7 +51,7 @@ class models:
 		m.update()
 
 		for j in range(numR):
-			m.addConstr(quicksum(f[i] for i in range(numR) if sites_covered[i][j]==1) >= r[j])
+			m.addConstr(quicksum(f[i] for i in range(numR) if self.sites_covered[i][j]==1) >= r[j])
 
 		m.addConstr(quicksum(f[i] for i in range(numR))<=5)
 
@@ -67,7 +61,7 @@ class models:
 
 		self.maximal_covering_model = m
 
-	def facility_location_set_covering_model(self):
+	def facility_location_set_covering(self):
 
 		numR = len(sites_covered)
 		numK = len(station_capacity)
@@ -115,9 +109,9 @@ class models:
 
 		m.optimize()
 
-		m=self.facility_location_set_covering_model
+		self.facility_location_set_covering_model = m
 
-	def facility_location_maximal_covering_model(self):
+	def facility_location_maximal_covering(self):
 
 		numR = len(sites_covered)
 		numK = len(station_capacity)
@@ -168,5 +162,19 @@ class models:
 
 		m.optimize()
 
-		m=self.facility_location_maximal_covering_model
+		self.facility_location_maximal_covering_model = m
+
+data=symm(100,80)
+sites_covered = data.getMatrix()
+budget = 10000000
+station_capacity = [1314000,1095000,876000,438000]
+station_cost =[1018413,809150,704519,599887]
+district_demand = demand(368000,184735,40).getMatrix()
+sites_covered = symm(30,80).getMatrix()
+
+m=models(sites_covered, station_capacity,station_cost,district_demand,budget)
+m.set_covering()
+m.maximal_covering()
+m.facility_location_set_covering()
+m.facility_location_maximal_covering()
 
