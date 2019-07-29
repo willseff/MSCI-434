@@ -222,13 +222,14 @@ class models:
 		self.facility_location_maximal_covering_weighted_model = m
 
 
-sites_covered = symm(100,80).getMatrix()
+#data(self,size,rate,demand_mu,demand_sigma,weight_mu,weight_sigma)
+data = data(30,80,368000,184735,1,0.5)
 budget = 10000000
 station_capacity = [1314000,1095000,876000,438000]
 station_cost =[1018413,809150,704519,599887]
-district_demand = demand(368000,184735,40).getMatrix()
-sites_covered = symm(30,80).getMatrix()
-district_weight = weightings(1,0.5,30).getMatrix()
+district_demand = data.demand
+sites_covered = data.b_symm
+district_weight = data.weights
 
 m=models(sites_covered, station_capacity,station_cost,district_demand,budget,district_weight)
 m.set_covering()
@@ -236,4 +237,3 @@ m.maximal_covering()
 m.facility_location_set_covering()
 m.facility_location_maximal_covering()
 m.facility_location_maximal_covering_weighted()
-
