@@ -13,7 +13,6 @@ m = Model()
 f = {} # Binary variables for each fire station
 r = {} # Binary variable for each region
 
-
 for i in range(numR):
 	f[i] = m.addVar(vtype=GRB.BINARY, name="fire station %d" % i)
 
