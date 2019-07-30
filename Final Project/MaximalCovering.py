@@ -31,5 +31,5 @@ m.setObjective(quicksum(r[i] for i in range(numR)), GRB.MAXIMIZE)
 m.optimize()
 
 for v in m.getVars():
-	if('fire station' in v.varName and v.x == 1):
+	if(v.x == 1):
 		print('%s' % (v.varName))
